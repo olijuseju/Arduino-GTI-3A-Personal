@@ -72,6 +72,9 @@ public:
 	
   // .........................................................
   // .........................................................
+  /**
+ * inicializamos emisora Bluetooth
+ */
   void encenderEmisora() {
 	// Serial.println ( "Bluefruit.begin() " );
 	 Bluefruit.begin(); 
@@ -82,6 +85,14 @@ public:
 
   // .........................................................
   // .........................................................
+  /**
+   * Este metodo se encarga de encender la emisora
+   *
+   * @param {CallbackConexionEstablecida} cbce - Callback que se encarga de la Conexion Establecida.
+   * @param {CallbackConexionTerminada} cbct - Callback que se encarga de la Conexion Terminada.
+   *
+   * @returns {Number} Descripcion del valor devuelto.
+   */
   void encenderEmisora( CallbackConexionEstablecida cbce,
 						CallbackConexionTerminada cbct ) {
 
@@ -94,6 +105,9 @@ public:
 
   // .........................................................
   // .........................................................
+    /**
+ * Detenemos el anuncio
+ */
   void detenerAnuncio() {
 
 	if ( (*this).estaAnunciando() ) {
@@ -106,12 +120,27 @@ public:
   // .........................................................
   // estaAnunciando() -> Boleano
   // .........................................................
+  /**
+   * Este método se encarga de verificar si estamos anunciando o no
+   * @returns {bool} True si está anunciando
+   */
+  
   bool estaAnunciando() {
 	return Bluefruit.Advertising.isRunning();
   } // ()
 
   // .........................................................
   // .........................................................
+    /**
+ * Este metodo se encarga de emitir un anuncio beacon.
+ *
+ * @param {N} beaconUUID - Uuid del beacon.
+ * @param {Z} major - Valor major.
+ * @param {Z} minor - Valor minor.
+ * @param {N} rssi - Valor rssi.
+ * 
+ *
+ */
   void emitirAnuncioIBeacon( uint8_t * beaconUUID, int16_t major, int16_t minor, uint8_t rssi ) {
 
 	//
@@ -200,6 +229,14 @@ public:
 
 	const uint8_t tamanyoCarga = strlen( carga );
   */
+
+    /**
+ * Este metodo se encarga de emitir un anuncio en un beacon libre.
+ *
+ *@param {Texto} carga - Caracter identificativo de la carga.
+ *@param {N} tamanyoCarga - Valor que indica el tamanyo de la carga.
+ *
+ */
   void emitirAnuncioIBeaconLibre( const char * carga, const uint8_t tamanyoCarga ) {
 
 	(*this).detenerAnuncio(); 
@@ -262,6 +299,14 @@ public:
 
   // .........................................................
   // .........................................................
+
+  /**
+ * Este metodo se encarga de añadir un servicio.
+ *
+ *@param {ServicioEnEmisora} servicio - Servicio a añadir.
+ *@return {Bool} - True si el servicio se ha añadido.
+ *
+ */
   bool anyadirServicio( ServicioEnEmisora & servicio ) {
 
 	Globales::elPuerto.escribir( " Bluefruit.Advertising.addService( servicio ); \n");
@@ -281,6 +326,13 @@ public:
   
   // .........................................................
   // .........................................................
+    /**
+ * Este metodo se encarga de añadir un servicio con sus caracteristicas.
+ *
+ *@param {ServicioEnEmisora} servicio - Servicio a añadir.
+ *@return {Bool} - True si el servicio se ha añadido.
+ *
+ */
   bool anyadirServicioConSusCaracteristicas( ServicioEnEmisora & servicio ) { 
 	return (*this).anyadirServicio( servicio );
   } // 
@@ -298,6 +350,14 @@ public:
   } // ()
 
   // .........................................................
+  /**
+ * Este metodo se encarga de añadir un servicio con sus caracteristicas y activarlo.
+ *
+ *@param {ServicioEnEmisora} servicio - Servicio a añadir.
+ *@param {Caracteristica} caracteristica Características del servicio
+ *@return {Bool} - True si el servicio se ha añadido.
+ *
+ */
   template <typename ... T>
   bool anyadirServicioConSusCaracteristicasYActivar( ServicioEnEmisora & servicio,
 													 // ServicioEnEmisora::Caracteristica & caracteristica,
@@ -313,6 +373,10 @@ public:
 
   // .........................................................
   // .........................................................
+  /*
+   * Con los siguientes metodos instalamos todos los callbacks
+   * 
+   */
   void instalarCallbackConexionEstablecida( CallbackConexionEstablecida cb ) {
 	Bluefruit.Periph.setConnectCallback( cb );
   } // ()
