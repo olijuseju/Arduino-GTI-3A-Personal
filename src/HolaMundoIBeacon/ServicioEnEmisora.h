@@ -250,6 +250,11 @@ public:
   
   // .........................................................
   // .........................................................
+  /*
+   * Constructor
+   * 
+   * @params {String} nombreServicio_ - nombre del servicio
+   */
   ServicioEnEmisora( const char * nombreServicio_ )
 	:
 	elServicio( stringAUint8AlReves( nombreServicio_, &uuidServicio[0], 16 ) )
@@ -259,6 +264,9 @@ public:
   
   // .........................................................
   // .........................................................
+  /*
+   * Escribe la uuid por pantalla
+   */
   void escribeUUID() {
 	Serial.println ( "**********" );
 	for (int i=0; i<= 15; i++) {
@@ -269,12 +277,19 @@ public:
 
   // .........................................................
   // .........................................................
+    /*
+   * Añade una caracteristica
+   * @params {Caracteristica} car - Caracteristica a añadir
+   */
   void anyadirCaracteristica( Caracteristica & car ) {
 	(*this).lasCaracteristicas.push_back( & car );
   } // ()
 
   // .........................................................
   // .........................................................
+  /*
+   * Activamos el servicio
+   */
   void activarServicio( ) {
 	// entiendo que al llegar aquí ya ha sido configurado
 	// todo: características y servicio
