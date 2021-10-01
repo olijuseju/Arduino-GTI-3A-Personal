@@ -21,22 +21,35 @@ public:
 
   // .....................................................
   // .....................................................
+  /*
+   * inicializa el sensor para las mediciones
+   */
   void iniciarMedidor() {
-	// las cosas que no se puedan hacer en el constructor, if any
+  // las cosas que no se puedan hacer en el constructor, if any
   } // ()
 
   // .....................................................
   // .....................................................
+    /**
+ * Medimos el CO2 con el sensor
+ * 
+ * @return {int} - Valor de CO2
+ */
   int medirCO2() {
-	return 235;
+  return 235;
   } // ()
 
   // .....................................................
   // .....................................................
+      /**
+ * Medimos la temperatura con el sensor
+ * 
+ * @return {int} - Valor de temperatura
+ */
   int medirTemperatura() {
-	return -12; // qué frío !
+  return -12; // qué frío !
   } // ()
-	
+  
 }; // class
 
 // ------------------------------------------------------

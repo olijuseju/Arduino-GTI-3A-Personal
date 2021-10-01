@@ -29,6 +29,16 @@ T *  alReves( T * p, int n ) {
 
 // ----------------------------------------------------
 // ----------------------------------------------------
+/**
+ * Este metodo se encarga de cambiar de una string a un natural. A modo de utilidad
+ *
+ *@param {Texto} pString - String a cambiar.
+ *@param {uint} pUint - Numero a rellenar con los datos del string.
+ *@param {int} tamMax - Valor que indica tamaño maximo.
+ *
+ *@return {int} - Numero resultante.
+ *
+ */
 uint8_t * stringAUint8AlReves( const char * pString, uint8_t * pUint, int tamMax ) {
 
 	int longitudString =  strlen( pString );
@@ -77,6 +87,9 @@ public:
 
 	// .........................................................
 	// .........................................................
+  /*
+   * Constructor
+   */
 	Caracteristica( const char * nombreCaracteristica_ )
 	  :
 	  laCaracteristica( stringAUint8AlReves( nombreCaracteristica_, &uuidCaracteristica[0], 16 ) )
@@ -86,10 +99,19 @@ public:
 
 	// .........................................................
 	// .........................................................
+  /**
+   * Constructor con 5 parametros
+   * 
+   * *@param {String} nombreCaracteristica_ - Nombre de la caracteristica.
+   * *@param {uint} props - Valor de props.
+   * *@param {SecureMode_t} permisoRead - Permiso para accion read.
+   * *@param {SecureMode_t} permisoWrite - Permiso para accion write.
+   * *@param {uint} tam - Tamaño de la caracteristica.
+   */
 	Caracteristica( const char * nombreCaracteristica_ ,
 					uint8_t props,
-					BleSecurityMode permisoRead,
-					BleSecurityMode permisoWrite, 
+					SecureMode_t permisoRead,
+					SecureMode_t permisoWrite, 
 					uint8_t tam ) 
 	  :
 	  Caracteristica( nombreCaracteristica_ ) // llamada al otro constructor
@@ -107,9 +129,9 @@ public:
 	} // ()
 
 	// .........................................................
-	// BleSecurityMode::SECMODE_OPEN  , BleSecurityMode::SECMODE_NO_ACCESS
+	// SecureMode_t::SECMODE_OPEN  , SecureMode_t::SECMODE_NO_ACCESS
 	// .........................................................
-	void asignarPermisos( BleSecurityMode permisoRead, BleSecurityMode permisoWrite ) {
+	void asignarPermisos( SecureMode_t permisoRead, SecureMode_t permisoWrite ) {
 	  // no puedo escribir AUN si el constructor llama a esto: Serial.println( "laCaracteristica.setPermission( permisoRead, permisoWrite ); " );
 	  (*this).laCaracteristica.setPermission( permisoRead, permisoWrite );
 	} // ()
@@ -126,9 +148,17 @@ public:
   public:
 	// .........................................................
 	// .........................................................
+  /**
+   * Metodo que asigna propiedades permiso tamanyo y datos a la caracteristica. Llama a los metodos anteriores que hacen lo mismpo por separado
+   * 
+   * *@param {uint} props - Valor de props.
+   * *@param {SecureMode_t} permisoRead - Permiso para accion read.
+   * *@param {SecureMode_t} permisoWrite - Permiso para accion write.
+   * *@param {uint} tam - Tamaño de la caracteristica.
+   */
 	void asignarPropiedadesPermisosYTamanyoDatos( uint8_t props,
-												 BleSecurityMode permisoRead,
-												 BleSecurityMode permisoWrite, 
+												 SecureMode_t permisoRead,
+												 SecureMode_t permisoWrite, 
 												 uint8_t tam ) {
 	  asignarPropiedades( props );
 	  asignarPermisos( permisoRead, permisoWrite );
@@ -138,6 +168,13 @@ public:
 
 	// .........................................................
 	// .........................................................
+   /**
+   * Metodo que escribe los datos por la caracteristica
+   * 
+   * *@param {String} str - Datos que se quieren escribir.
+   *
+   * *@return {uint}- Valor escrito de datos en la caracteristica.
+   */
 	uint16_t escribirDatos( const char * str ) {
 	  // Serial.print( " return (*this).laCaracteristica.write( str  = " );
 	  // Serial.println( str );
@@ -151,6 +188,13 @@ public:
 
 	// .........................................................
 	// .........................................................
+    /**
+   * Metodo que notifica datos en la caracteristica
+   * 
+   * *@param {Texto} str - Datos que se quieren notificar en la caracteristica.
+   *
+   * *@return {N}- Valor notificado de datos en la caracteristica.
+   */
 	uint16_t notificarDatos( const char * str ) {
 	  
 	  uint16_t r = laCaracteristica.notify( &str[0] );
@@ -160,12 +204,18 @@ public:
 
 	// .........................................................
 	// .........................................................
+  /*
+   * metodo que instala el callback de la caracteristica escrita
+   */
 	void instalarCallbackCaracteristicaEscrita( CallbackCaracteristicaEscrita cb ) {
 	  (*this).laCaracteristica.setWriteCallback( cb );
 	} // ()
 
 	// .........................................................
 	// .........................................................
+    /**
+   * Metodo que activa la caracteristica
+   */
 	void activar() {
 	  err_t error = (*this).laCaracteristica.begin();
 	  Globales::elPuerto.escribir(  " (*this).laCaracteristica.begin(); error = " );
@@ -254,4 +304,3 @@ public:
 // ----------------------------------------------------------
 // ----------------------------------------------------------
 // ----------------------------------------------------------
-
