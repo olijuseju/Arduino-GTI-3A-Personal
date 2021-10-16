@@ -30,10 +30,7 @@ public:
    * Este metodo espera a que haya un puerto serie disponible
    */
   void esperarDisponible() {
-
-	while ( !Serial ) {
-	  delay(10);   
-	}
+	    delay(10);   	
 
   } // ()
 
