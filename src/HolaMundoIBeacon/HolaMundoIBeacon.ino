@@ -3,12 +3,11 @@
 
 //TEST
 
-
 // --------------------------------------------------------------
-//
-// Jordi Bataller i Mascarell
-// 2019-07-07
-//
+/**
+ * @author Jose Julio Peñaranda
+ * 2021-10-14
+ */
 // --------------------------------------------------------------
 
 // https://learn.sparkfun.com/tutorials/nrf52840-development-with-arduino-and-circuitpython
