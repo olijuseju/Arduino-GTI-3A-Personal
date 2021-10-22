@@ -3,12 +3,11 @@
 
 //TEST
 
-
 // --------------------------------------------------------------
-//
-// Jordi Bataller i Mascarell
-// 2019-07-07
-//
+/**
+ * @author Jose Julio Peñaranda
+ * 2021-10-14
+ */
 // --------------------------------------------------------------
 
 // https://learn.sparkfun.com/tutorials/nrf52840-development-with-arduino-and-circuitpython
@@ -101,6 +100,9 @@ void setup() {
 
 // --------------------------------------------------------------
 // --------------------------------------------------------------
+/**
+ * Hacemos parpadear el led
+ */
 inline void lucecitas() {
   using namespace Globales;
 
@@ -143,20 +145,10 @@ void loop () {
   int valorCO2 = elMedidor.medirCO2();
   
   elPublicador.publicarCO2( valorCO2,
-							cont,
-							1000 // intervalo de emisión
-							);
+              cont,
+              1000 // intervalo de emisión
+              );
   
-  // 
-  // mido y publico
-  // 
-  int valorTemperatura = elMedidor.medirTemperatura();
-  
-  elPublicador.publicarTemperatura( valorTemperatura, 
-									cont,
-									1000 // intervalo de emisión
-									);
-
   // 
   // prueba para emitir un iBeacon y poner
   // en la carga (21 bytes = uuid 16 major 2 minor 2 txPower 1 )
@@ -164,18 +156,7 @@ void loop () {
   // 
   // Al terminar la prueba hay que hacer Publicador::laEmisora privado
   // 
-  char datos[21] = {
-	'H', 'o', 'l', 'a',
-	'H', 'o', 'l', 'a',
-	'H', 'o', 'l', 'a',
-	'H', 'o', 'l', 'a',
-	'H', 'o', 'l', 'a',
-	'H'
-  };
-
-  // elPublicador.laEmisora.emitirAnuncioIBeaconLibre ( &datos[0], 21 );
-  elPublicador.laEmisora.emitirAnuncioIBeaconLibre ( "MolaMolaMolaMolaMolaM", 21 );
-
+ 
   esperar( 2000 );
 
   elPublicador.laEmisora.detenerAnuncio();
