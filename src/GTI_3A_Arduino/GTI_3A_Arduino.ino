@@ -37,7 +37,7 @@ namespace Globales {
   // Serial1 en el ejemplo de Curro creo que es la conexión placa-sensor 
 };
 
-// --------------------------------------------------------------
+// ----------------------------------------------------------
 // --------------------------------------------------------------
 #include "EmisoraBLE.h"
 #include "Publicador.h"
@@ -50,7 +50,7 @@ namespace Globales {
 
   Publicador elPublicador;
 
-  Medidor elMedidor;
+  Medidor elMedidor(&Serial1);
 
 }; // namespace
 
@@ -58,8 +58,8 @@ namespace Globales {
 // --------------------------------------------------------------
 void inicializarPlaquita () {
 
-  // de momento nada
-
+  Serial1.begin(9600);
+  Globales::elMedidor.iniciarMedidor();
 } // ()
 
 // --------------------------------------------------------------
@@ -67,7 +67,8 @@ void inicializarPlaquita () {
 // --------------------------------------------------------------
 void setup() {
 
-  Globales::elPuerto.esperarDisponible();
+
+  //Globales::elPuerto.esperarDisponible();
 
   // 
   // 
@@ -131,6 +132,10 @@ void loop () {
   using namespace Globales;
 
   cont++;
+  elPuerto.escribir( "---- TIPO DE DATO **** " );
+
+  elPuerto.escribir( elMedidor.getTipoDeDato() );
+  elPuerto.escribir( " **** TIPO DE DATO ---- " );
 
   elPuerto.escribir( "\n---- loop(): empieza " );
   elPuerto.escribir( cont );
@@ -142,13 +147,44 @@ void loop () {
   // 
   // mido y publico
   // 
+
+  elMedidor.realizarMedicion('\r');
   int valorCO2 = elMedidor.medirCO2();
+  elPuerto.escribir( "---- VALOR CO2 **** " );
+
+  elPuerto.escribir( valorCO2 );
+  elPuerto.escribir( " **** VALOR CO2 ---- " );
+
+
+  int valorTemperatura = elMedidor.medirTemperatura();
+  elPuerto.escribir( "---- VALOR Temperatura **** " );
+
+  elPuerto.escribir( valorTemperatura );
+  elPuerto.escribir( " **** VALOR Temperatura ---- " );
+
+
+  int valorHumedad = elMedidor.medirHumedad();
+  elPuerto.escribir( "---- VALOR Humedad **** " );
+
+  elPuerto.escribir( valorHumedad );
+  elPuerto.escribir( " **** VALOR Humedad ---- " );
+  
   
   elPublicador.publicarCO2( valorCO2,
               cont,
               1000 // intervalo de emisión
               );
-  
+
+  elPublicador.publicarTemperatura( valorTemperatura,
+              cont,
+              1000 // intervalo de emisión
+              );
+
+
+  elPublicador.publicarHumedad( valorHumedad,
+              cont,
+              1000 // intervalo de emisión
+              );
   // 
   // prueba para emitir un iBeacon y poner
   // en la carga (21 bytes = uuid 16 major 2 minor 2 txPower 1 )
