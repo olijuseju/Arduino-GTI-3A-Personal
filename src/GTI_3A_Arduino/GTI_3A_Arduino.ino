@@ -70,6 +70,8 @@ void setup() {
 
   //Globales::elPuerto.esperarDisponible();
 
+  Globales::elPuerto.escribir( "---- setup(): inicio ---- \n " );
+
   // 
   // 
   // 
@@ -132,20 +134,19 @@ void loop () {
   using namespace Globales;
 
   cont++;
-  elPuerto.escribir( "---- TIPO DE DATO **** " );
 
-  elPuerto.escribir( elMedidor.getTipoDeDato() );
-  elPuerto.escribir( " **** TIPO DE DATO ---- " );
-
+  
   elPuerto.escribir( "\n---- loop(): empieza " );
   elPuerto.escribir( cont );
   elPuerto.escribir( "\n" );
 
 
-  lucecitas();
+  elPuerto.escribir( "---- TIPO DE DATO **** " );
+  elPuerto.escribir( elMedidor.getTipoDeDato() );
+  elPuerto.escribir( " **** TIPO DE DATO ---- " );
 
   // 
-  // mido y publico
+  // mido CO2
   // 
 
   elMedidor.realizarMedicion('\r');
@@ -156,6 +157,9 @@ void loop () {
   elPuerto.escribir( " **** VALOR CO2 ---- " );
 
 
+  // 
+  // mido Temperatura
+  // 
   int valorTemperatura = elMedidor.medirTemperatura();
   elPuerto.escribir( "---- VALOR Temperatura **** " );
 
@@ -163,13 +167,21 @@ void loop () {
   elPuerto.escribir( " **** VALOR Temperatura ---- " );
 
 
+
+  // 
+  // mido Humedad
+  // 
   int valorHumedad = elMedidor.medirHumedad();
   elPuerto.escribir( "---- VALOR Humedad **** " );
 
   elPuerto.escribir( valorHumedad );
   elPuerto.escribir( " **** VALOR Humedad ---- " );
   
-  
+
+
+  //
+  // publico las 3 mediciones
+  //
   elPublicador.publicarCO2( valorCO2,
               cont,
               1000 // intervalo de emisión
@@ -185,14 +197,7 @@ void loop () {
               cont,
               1000 // intervalo de emisión
               );
-  // 
-  // prueba para emitir un iBeacon y poner
-  // en la carga (21 bytes = uuid 16 major 2 minor 2 txPower 1 )
-  // lo que queramos (sin seguir dicho formato)
-  // 
-  // Al terminar la prueba hay que hacer Publicador::laEmisora privado
-  // 
- 
+
   esperar( 2000 );
 
   elPublicador.laEmisora.detenerAnuncio();
