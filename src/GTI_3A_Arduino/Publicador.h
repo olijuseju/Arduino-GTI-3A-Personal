@@ -79,7 +79,7 @@ public:
   //
   // 1. empezamos anuncio
   //
-  uint16_t major = (MedicionesID::CO2 << 8) + contador;
+  uint16_t major = MedicionesID::CO2;
   (*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
                       major,
                       valorCO2, // minor
@@ -121,7 +121,7 @@ public:
   void publicarTemperatura( int16_t valorTemperatura,
               uint8_t contador, long tiempoEspera ) {
 
-  uint16_t major = (MedicionesID::TEMPERATURA << 8) + contador;
+  uint16_t major = MedicionesID::TEMPERATURA;
   (*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
                       major,
                       valorTemperatura, // minor
@@ -147,7 +147,7 @@ public:
   void publicarHumedad( int16_t valorHumedad,
               uint8_t contador, long tiempoEspera ) {
 
-  uint16_t major = (MedicionesID::HUMEDAD << 8) + contador;
+  uint16_t major = MedicionesID::HUMEDAD;
   (*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
                       major,
                       valorHumedad, // minor
