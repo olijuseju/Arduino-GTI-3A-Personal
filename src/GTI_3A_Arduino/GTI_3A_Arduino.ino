@@ -17,6 +17,8 @@
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 #include <bluefruit.h>
+#include <Arduino.h>
+#include <Adafruit_TinyUSB.h>
 
 #undef min // vaya tela, están definidos en bluefruit.h y  !
 #undef max // colisionan con los de la biblioteca estándar
@@ -32,7 +34,7 @@ namespace Globales {
   
   LED elLED ( /* NUMERO DEL PIN LED = */ 7 );
 
-  PuertoSerie elPuerto ( /* velocidad = */ 115200 ); // 115200 o 9600 o ...
+  PuertoSerie elPuerto ( /* velocidad = */ 9600 ); // 115200 o 9600 o ...
 
   // Serial1 en el ejemplo de Curro creo que es la conexión placa-sensor 
 };
@@ -59,7 +61,6 @@ namespace Globales {
 void inicializarPlaquita () {
 
   Serial1.begin(9600);
-  Globales::elMedidor.iniciarMedidor();
 } // ()
 
 // --------------------------------------------------------------
@@ -69,8 +70,6 @@ void setup() {
 
 
   //Globales::elPuerto.esperarDisponible();
-
-  Globales::elPuerto.escribir( "---- setup(): inicio ---- \n " );
 
   // 
   // 
@@ -85,17 +84,13 @@ void setup() {
   // 
   Globales::elPublicador.encenderEmisora();
 
-  // Globales::elPublicador.laEmisora.pruebaEmision();
+  delay( 1000 );
+
   
   // 
   // 
   // 
   Globales::elMedidor.iniciarMedidor();
-
-  // 
-  // 
-  // 
-  esperar( 1000 );
 
   Globales::elPuerto.escribir( "---- setup(): fin ---- \n " );
 
@@ -140,6 +135,8 @@ void loop () {
   elPuerto.escribir( cont );
   elPuerto.escribir( "\n" );
 
+  elMedidor.realizarMedicion('\r');
+
 
   elPuerto.escribir( "---- TIPO DE DATO **** " );
   elPuerto.escribir( elMedidor.getTipoDeDato() );
@@ -149,8 +146,7 @@ void loop () {
   // mido CO2
   // 
 
-  elMedidor.realizarMedicion('\r');
-  int valorCO2 = elMedidor.medirCO2();
+  uint16_t valorCO2 = elMedidor.medirCO2();
   elPuerto.escribir( "---- VALOR CO2 **** " );
 
   elPuerto.escribir( valorCO2 );
@@ -198,9 +194,7 @@ void loop () {
               1000 // intervalo de emisión
               );
 
-  esperar( 2000 );
-
-  elPublicador.laEmisora.detenerAnuncio();
+   // elPublicador.laEmisora.detenerAnuncio();
   
   // 
   // 
@@ -208,6 +202,8 @@ void loop () {
   elPuerto.escribir( "---- loop(): acaba **** " );
   elPuerto.escribir( cont );
   elPuerto.escribir( "\n" );
+
+  delay(2000);
   
 } // loop ()
 // --------------------------------------------------------------

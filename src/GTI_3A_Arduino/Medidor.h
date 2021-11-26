@@ -19,16 +19,16 @@ class Medidor {
 private:
 
     Stream *_mySerial;
-    int sensorData [11]; //Datos de las medidas
+    long sensorData[11]; //Datos de las medidas
     String informacionSensor[5]; //Datos sensor de la EEPROM
     
 public:
 
   // .....................................................
-  // constructor
+  // constructores
   // .....................................................
     Medidor(Stream *mySerial) : _mySerial(mySerial) {    }
-    
+    Medidor(Stream &mySerial) : _mySerial(&mySerial) {    }
   // .....................................................
   // .....................................................
   /*
@@ -96,8 +96,9 @@ public:
  * 
  * @return {int} - Valor de CO2
  */
-  int medirCO2() {
-  return sensorData[1];
+  double medirCO2() {
+  int dato = sensorData[1];
+  return round(dato);
   } // ()
 
   // .....................................................
