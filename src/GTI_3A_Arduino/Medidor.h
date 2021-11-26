@@ -96,9 +96,9 @@ public:
  * 
  * @return {int} - Valor de CO2
  */
-  double medirCO2() {
-  int dato = sensorData[1];
-  return round(dato);
+  uint16_t medirCO2() {
+    uint16_t dato = sensorData[1];
+    return round(dato);
   } // ()
 
   // .....................................................
