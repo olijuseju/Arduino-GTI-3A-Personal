@@ -182,6 +182,45 @@ public:
   
   } // ()
 
+  void emitirAnuncioIBeaconUint( uint8_t * beaconUUID, int16_t major, uint16_t minor, uint8_t rssi ) {
+
+  //
+  //
+  //
+  (*this).detenerAnuncio();
+  
+  //
+  // creo el beacon 
+  //
+  BLEBeacon elBeacon( beaconUUID, major, minor, rssi );
+  elBeacon.setManufacturer( (*this).fabricanteID );
+
+  //
+  // parece que esto debe ponerse todo aquí
+  //
+
+  Bluefruit.setTxPower( (*this).txPower );
+  Bluefruit.setName( (*this).nombreEmisora );
+  Bluefruit.ScanResponse.addName(); // para que envíe el nombre de emisora (?!)
+
+  //
+  // pongo el beacon
+  //
+  Bluefruit.Advertising.setBeacon( elBeacon );
+
+  //
+  // ? qué valorers poner aquí
+  //
+  Bluefruit.Advertising.restartOnDisconnect(true); // no hace falta, pero lo pongo
+  Bluefruit.Advertising.setInterval(100, 100);    // in unit of 0.625 ms
+
+  //
+  // empieza el anuncio, 0 = tiempo indefinido (ya lo pararán)
+  //
+  Bluefruit.Advertising.start( 0 ); 
+  
+  } // ()
+
   // .........................................................
   //
   // Ejemplo de Beacon (31 bytes)

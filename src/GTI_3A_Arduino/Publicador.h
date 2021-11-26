@@ -73,16 +73,17 @@ public:
    * @param {uint} contador - Numero natural que representa al contador
    * @param {long} tiempoEspera - Valor del tiempo de espera
    */
-  void publicarCO2( int16_t valorCO2, uint8_t contador,
+  void publicarCO2( uint16_t valorCO2, uint8_t contador,
           long tiempoEspera ) {
 
   //
   // 1. empezamos anuncio
   //
+  float porcentaje = (valorCO2*100/65535);
   uint16_t major = MedicionesID::CO2;
   (*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
                       major,
-                      valorCO2, // minor
+                      round(porcentaje), // minor
                       (*this).RSSI // rssi
                   );
 
