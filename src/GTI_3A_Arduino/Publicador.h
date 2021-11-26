@@ -41,6 +41,7 @@ public:
   // ............................................................
   // ............................................................
   enum MedicionesID  {
+  HUMEDAD = 10,
   CO2 = 11,
   TEMPERATURA = 12,
   RUIDO = 13
@@ -78,7 +79,7 @@ public:
   //
   // 1. empezamos anuncio
   //
-  uint16_t major = (MedicionesID::CO2 << 8) + contador;
+  uint16_t major = MedicionesID::CO2;
   (*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
                       major,
                       valorCO2, // minor
@@ -120,10 +121,36 @@ public:
   void publicarTemperatura( int16_t valorTemperatura,
               uint8_t contador, long tiempoEspera ) {
 
-  uint16_t major = (MedicionesID::TEMPERATURA << 8) + contador;
+  uint16_t major = MedicionesID::TEMPERATURA;
   (*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
                       major,
                       valorTemperatura, // minor
+                      (*this).RSSI // rssi
+                  );
+  esperar( tiempoEspera );
+
+  (*this).laEmisora.detenerAnuncio();
+  } // ()
+
+
+  // ............................................................
+  // ............................................................
+  
+  /*
+   * Publicamos los valores de humedad
+   * 
+   * @param {int} valorHumedad - Valor humedad a publicar
+   * 
+   * @param {uint} contador - Numero natural que representa al contador
+   * @param {long} tiempoEspera - Valor del tiempo de espera
+   */
+  void publicarHumedad( int16_t valorHumedad,
+              uint8_t contador, long tiempoEspera ) {
+
+  uint16_t major = MedicionesID::HUMEDAD;
+  (*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
+                      major,
+                      valorHumedad, // minor
                       (*this).RSSI // rssi
                   );
   esperar( tiempoEspera );

@@ -17,6 +17,8 @@
 // --------------------------------------------------------------
 // --------------------------------------------------------------
 #include <bluefruit.h>
+#include <Arduino.h>
+#include <Adafruit_TinyUSB.h>
 
 #undef min // vaya tela, están definidos en bluefruit.h y  !
 #undef max // colisionan con los de la biblioteca estándar
@@ -32,12 +34,12 @@ namespace Globales {
   
   LED elLED ( /* NUMERO DEL PIN LED = */ 7 );
 
-  PuertoSerie elPuerto ( /* velocidad = */ 115200 ); // 115200 o 9600 o ...
+  PuertoSerie elPuerto ( /* velocidad = */ 9600 ); // 115200 o 9600 o ...
 
   // Serial1 en el ejemplo de Curro creo que es la conexión placa-sensor 
 };
 
-// --------------------------------------------------------------
+// ----------------------------------------------------------
 // --------------------------------------------------------------
 #include "EmisoraBLE.h"
 #include "Publicador.h"
@@ -50,7 +52,7 @@ namespace Globales {
 
   Publicador elPublicador;
 
-  Medidor elMedidor;
+  Medidor elMedidor(&Serial1);
 
 }; // namespace
 
@@ -58,8 +60,7 @@ namespace Globales {
 // --------------------------------------------------------------
 void inicializarPlaquita () {
 
-  // de momento nada
-
+  Serial1.begin(9600);
 } // ()
 
 // --------------------------------------------------------------
@@ -67,7 +68,8 @@ void inicializarPlaquita () {
 // --------------------------------------------------------------
 void setup() {
 
-  Globales::elPuerto.esperarDisponible();
+
+  //Globales::elPuerto.esperarDisponible();
 
   // 
   // 
@@ -82,17 +84,13 @@ void setup() {
   // 
   Globales::elPublicador.encenderEmisora();
 
-  // Globales::elPublicador.laEmisora.pruebaEmision();
+  delay( 1000 );
+
   
   // 
   // 
   // 
   Globales::elMedidor.iniciarMedidor();
-
-  // 
-  // 
-  // 
-  esperar( 1000 );
 
   Globales::elPuerto.escribir( "---- setup(): fin ---- \n " );
 
@@ -132,34 +130,71 @@ void loop () {
 
   cont++;
 
+  
   elPuerto.escribir( "\n---- loop(): empieza " );
   elPuerto.escribir( cont );
   elPuerto.escribir( "\n" );
 
+  elMedidor.realizarMedicion('\r');
 
-  lucecitas();
+
+  elPuerto.escribir( "---- TIPO DE DATO **** " );
+  elPuerto.escribir( elMedidor.getTipoDeDato() );
+  elPuerto.escribir( " **** TIPO DE DATO ---- " );
 
   // 
-  // mido y publico
+  // mido CO2
   // 
-  int valorCO2 = elMedidor.medirCO2();
+
+  uint16_t valorCO2 = elMedidor.medirCO2();
+  elPuerto.escribir( "---- VALOR CO2 **** " );
+
+  elPuerto.escribir( valorCO2 );
+  elPuerto.escribir( " **** VALOR CO2 ---- " );
+
+
+  // 
+  // mido Temperatura
+  // 
+  int valorTemperatura = elMedidor.medirTemperatura();
+  elPuerto.escribir( "---- VALOR Temperatura **** " );
+
+  elPuerto.escribir( valorTemperatura );
+  elPuerto.escribir( " **** VALOR Temperatura ---- " );
+
+
+
+  // 
+  // mido Humedad
+  // 
+  int valorHumedad = elMedidor.medirHumedad();
+  elPuerto.escribir( "---- VALOR Humedad **** " );
+
+  elPuerto.escribir( valorHumedad );
+  elPuerto.escribir( " **** VALOR Humedad ---- " );
   
+
+
+  //
+  // publico las 3 mediciones
+  //
   elPublicador.publicarCO2( valorCO2,
               cont,
               1000 // intervalo de emisión
               );
-  
-  // 
-  // prueba para emitir un iBeacon y poner
-  // en la carga (21 bytes = uuid 16 major 2 minor 2 txPower 1 )
-  // lo que queramos (sin seguir dicho formato)
-  // 
-  // Al terminar la prueba hay que hacer Publicador::laEmisora privado
-  // 
- 
-  esperar( 2000 );
 
-  elPublicador.laEmisora.detenerAnuncio();
+  elPublicador.publicarTemperatura( valorTemperatura,
+              cont,
+              1000 // intervalo de emisión
+              );
+
+
+  elPublicador.publicarHumedad( valorHumedad,
+              cont,
+              1000 // intervalo de emisión
+              );
+
+   // elPublicador.laEmisora.detenerAnuncio();
   
   // 
   // 
@@ -167,6 +202,8 @@ void loop () {
   elPuerto.escribir( "---- loop(): acaba **** " );
   elPuerto.escribir( cont );
   elPuerto.escribir( "\n" );
+
+  delay(2000);
   
 } // loop ()
 // --------------------------------------------------------------
