@@ -149,7 +149,7 @@ void loop () {
   uint16_t valorCO2 = elMedidor.medirCO2();
   elPuerto.escribir( "---- VALOR CO2 **** " );
 
-  elPuerto.escribir( valorCO2 );
+  elPuerto.escribir( ((valorCO2*5000)/65535) );
   elPuerto.escribir( " **** VALOR CO2 ---- " );
 
 

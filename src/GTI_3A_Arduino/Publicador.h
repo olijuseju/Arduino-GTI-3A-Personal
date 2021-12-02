@@ -79,11 +79,11 @@ public:
   //
   // 1. empezamos anuncio
   //
-  float porcentaje = (valorCO2*100/65535);
+  float porcentaje = ((valorCO2*5000)/65535);
   uint16_t major = MedicionesID::CO2;
   (*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
                       major,
-                      round(porcentaje), // minor
+                      porcentaje, // minor
                       (*this).RSSI // rssi
                   );
 
