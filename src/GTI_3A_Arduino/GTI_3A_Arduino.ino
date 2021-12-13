@@ -194,8 +194,7 @@ void loop () {
               1000 // intervalo de emisión
               );
 
-   // elPublicador.laEmisora.detenerAnuncio();
-  
+  // elPublicador.laEmisora.detenerAnuncio();
   // 
   // 
   // 

@@ -9,6 +9,10 @@
 #ifndef EMISORA_H_INCLUIDO
 #define EMISORA_H_INCLUIDO
 
+/**
+ * Links documentación Jordi
+ * 
+ */
 // Buena introducción: https://learn.adafruit.com/introduction-to-bluetooth-low-energy/gap
 // https://os.mbed.com/blog/entry/BLE-Beacons-URIBeacon-AltBeacons-iBeacon/
 
@@ -46,35 +50,11 @@ public:
   nombreEmisora( nombreEmisora_ ) ,
   fabricanteID( fabricanteID_ ) ,
   txPower( txPower_ )
-  {
-  // no encender ahora la emisora, tal vez sea por el println()
-  // que hace que todo falle si lo llamo en el contructor
-  // ( = antes que configuremos Serial )
-  // No parece que sea por el println,
-  // por tanto NO_encenderEmisora();
-  } // ()
+  {  } // ()
 
   // .........................................................
   // .........................................................
-  /* creo que no me sirve esta versión porque parece
-   que no se instalen los callbacks si la emisora no está encendida,
-   pero no la puedo encender en el constructor 
-  EmisoraBLE( const char * nombreEmisora_, const uint16_t fabricanteID_,
-        const int8_t txPower_,
-        CallbackConexionEstablecida cbce,
-        CallbackConexionTerminada cbct
-        ) 
-  :
-  EmisoraBLE ( nombreEmisora_, fabricanteID_, txPower_ )
-  {
-  instalarCallbackConexionEstablecida( cbce );
-  instalarCallbackConexionTerminada( cbct );
-  } // ()
-  */
-  
-  // .........................................................
-  // .........................................................
-  /**
+ /**
  * inicializamos emisora Bluetooth
  */
   void encenderEmisora() {
@@ -107,7 +87,7 @@ public:
 
   // .........................................................
   // .........................................................
-    /**
+ /**
  * Detenemos el anuncio
  */
   void detenerAnuncio() {

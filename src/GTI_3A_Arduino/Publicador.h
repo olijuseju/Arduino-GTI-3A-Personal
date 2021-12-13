@@ -32,7 +32,7 @@ public:
     4 // txPower
     };
   
-  const int RSSI = -53; // por poner algo, de momento no lo uso
+  const int RSSI = -5; // por poner algo, de momento no lo uso
 
   // ............................................................
   // ............................................................
@@ -79,11 +79,11 @@ public:
   //
   // 1. empezamos anuncio
   //
-  float porcentaje = ((valorCO2*5000)/65535);
+  float porcentaje = (valorCO2*100/65535);
   uint16_t major = MedicionesID::CO2;
   (*this).laEmisora.emitirAnuncioIBeacon( (*this).beaconUUID, 
                       major,
-                      porcentaje, // minor
+                      round(porcentaje), // minor
                       (*this).RSSI // rssi
                   );
 

@@ -14,7 +14,7 @@
 /**
  * Este metodo se encarga de hacer esperar al led un tiempo
  *
- *@param {N} tiempo - Valor de tiempo de espera.
+ * @param {N} tiempo - Valor de tiempo de espera.
  *
  *
  */
@@ -41,7 +41,7 @@ public:
 
   // .........................................................
   // .........................................................
-    /*
+   /*
    * Enciende la placa
    */
   void encender () {
@@ -74,10 +74,9 @@ public:
 
   // .........................................................
   // .........................................................
-      /*
+  /*
    * la placa se enciende durante un tiempo y luego se apaga
    *  *@param {N} tiempo - Valor de tiempo de espera.
-
    */
   void brillar (long tiempo) {
   encender ();
