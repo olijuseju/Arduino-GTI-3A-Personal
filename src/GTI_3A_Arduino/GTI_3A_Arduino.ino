@@ -197,11 +197,10 @@ void loop () {
 
   //ha pasado una hora de calibración, el sensor enviará los datos
   if(calibrado){
-
-
-            elPuerto.escribir( "\n" );
-            elPuerto.escribir( "---- MANDO DATOS ----" );
-            elPuerto.escribir( "\n" );
+    
+    elPuerto.escribir( "\n" );
+    elPuerto.escribir( "---- MANDO DATOS ----" );
+    elPuerto.escribir( "\n" );
     
     elPublicador.publicarCO2( valorCO2,
               cont,
@@ -212,7 +211,6 @@ void loop () {
               cont,
               1000 // intervalo de emisión
               );
-
 
     elPublicador.publicarHumedad( valorHumedad,
               cont,
