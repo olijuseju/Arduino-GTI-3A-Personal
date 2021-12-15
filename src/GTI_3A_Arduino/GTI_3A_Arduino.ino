@@ -52,6 +52,8 @@ namespace Globales {
 
   Publicador elPublicador;
 
+  bool calibrado;
+
   Medidor elMedidor(&Serial1);
 
 }; // namespace
@@ -82,8 +84,8 @@ void setup() {
   // 
   // 
   // 
-  Globales::elPublicador.encenderEmisora();
-
+  Globales::calibrado = false;
+  
   delay( 1000 );
 
   
@@ -118,7 +120,7 @@ inline void lucecitas() {
 // loop ()
 // --------------------------------------------------------------
 namespace Loop {
-  uint8_t cont = 0;
+  uint16_t cont = 0;
 };
 
 // ..............................................................
@@ -129,6 +131,20 @@ void loop () {
   using namespace Globales;
 
   cont++;
+
+  //El sensor tarda una hora en calibrarse (1800*2 = 3600 = 1hora)
+  if(!calibrado){
+    if(cont>1800){
+            elPuerto.escribir( "\n" );
+            elPuerto.escribir( "---- CALIBRACION COMPLETADA ----" );
+            elPuerto.escribir( "\n" );
+
+
+      
+          Globales::elPublicador.encenderEmisora();
+          calibrado=true;
+    }
+  }
 
   
   elPuerto.escribir( "\n---- loop(): empieza " );
@@ -178,22 +194,32 @@ void loop () {
   //
   // publico las 3 mediciones
   //
-  elPublicador.publicarCO2( valorCO2,
+
+  //ha pasado una hora de calibración, el sensor enviará los datos
+  if(calibrado){
+
+
+            elPuerto.escribir( "\n" );
+            elPuerto.escribir( "---- MANDO DATOS ----" );
+            elPuerto.escribir( "\n" );
+    
+    elPublicador.publicarCO2( valorCO2,
               cont,
               1000 // intervalo de emisión
               );
 
-  elPublicador.publicarTemperatura( valorTemperatura,
+    elPublicador.publicarTemperatura( valorTemperatura,
               cont,
               1000 // intervalo de emisión
               );
 
 
-  elPublicador.publicarHumedad( valorHumedad,
+    elPublicador.publicarHumedad( valorHumedad,
               cont,
               1000 // intervalo de emisión
               );
-
+  }
+  
   // elPublicador.laEmisora.detenerAnuncio();
   // 
   // 
