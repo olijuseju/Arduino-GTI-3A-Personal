@@ -34,7 +34,7 @@ El sensor tardará una hora en calibrarse, tras ésto enviará los beacons corre
 
 ## Autores ✒️
 
-* **Jose Julio Peñaranda** - *Trabajo Inicial y documentacion* - [joseee_julio]
+* **Jose Julio Peñaranda** - *Trabajo Inicial y documentacion* - [olijuseju@gmail.com]
 * **Leire Villarroya** - *Trabajo secundario* - [leire@leire.ping]
 
 
