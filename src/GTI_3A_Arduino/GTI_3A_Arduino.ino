@@ -134,7 +134,7 @@ void loop () {
 
   //El sensor tarda una hora en calibrarse (1800*2 = 3600 = 1hora)
   if(!calibrado){
-    if(cont>1800){
+    if(cont>10){
             elPuerto.escribir( "\n" );
             elPuerto.escribir( "---- CALIBRACION COMPLETADA ----" );
             elPuerto.escribir( "\n" );
